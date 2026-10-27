@@ -40,7 +40,7 @@ h2{font-size:29px;letter-spacing:-.04em;margin:9px 0}
 .note{margin-top:18px;color:#8199a7;font-size:12px}
 footer{border-top:1px solid #263744;padding:25px 0 34px;color:#879eab;font-size:13px;display:flex;justify-content:space-between;gap:15px}
 @media(max-width:700px){header{padding:23px 0}nav .chip{display:none}.hero{padding:69px 0 64px}.grid{grid-template-columns:1fr}.project{min-height:225px}.section-heading{align-items:start;flex-direction:column}footer{flex-direction:column}}
-</style>
+.preview-card{width:100%;color:inherit;text-align:left;font:inherit;cursor:pointer}.preview-card:hover .link{text-decoration:underline}.preview-dialog{border:1px solid #3a5561;border-radius:20px;background:#101a25;color:#ecf5fa;padding:0;width:min(1100px,calc(100vw - 32px));max-height:92vh;box-shadow:0 22px 80px #000b}.preview-dialog::backdrop{background:#03080ddb;backdrop-filter:blur(7px)}.preview-shell{display:flex;flex-direction:column;max-height:92vh}.preview-header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:22px 25px;border-bottom:1px solid #304451}.preview-header h2{font-size:23px;margin:2px 0 7px}.preview-header p{margin:0;color:#aec0cb;line-height:1.5;font-size:13px}.preview-close{flex-shrink:0;background:#21323e;border:1px solid #3a5561;border-radius:10px;padding:9px 13px;cursor:pointer;color:white;font-size:16px}.preview-body{overflow:auto;padding:16px;background:#0c1420}.preview-body img{width:100%;height:auto;display:block;border-radius:10px}.preview-note{display:none;border:1px solid #36515b;border-radius:12px;padding:20px;color:#aec0cb}.preview-body.missing img{display:none}.preview-body.missing .preview-note{display:block}@media(max-width:700px){.preview-header{padding:16px}.preview-header h2{font-size:18px}.preview-body{padding:8px}} </style>
 </head>
 <body><div class="wrap">
 <header><a class="brand" href="/" aria-label="FalkenForge home">Falken<b>Forge</b><span class="accent">.</span></a><nav><a href="#projects">Projects</a><span class="chip">The FalkenForge Innovation Lab</span></nav></header>
@@ -52,10 +52,24 @@ footer{border-top:1px solid #263744;padding:25px 0 34px;color:#879eab;font-size:
 </section>
 <section class="projects" id="projects"><div class="section-heading"><div><div class="kicker">Inside the forge</div><h2>Projects & experiments</h2></div><span class="muted">Small ideas. Real builds.</span></div>
 <div class="grid">
-<a class="project" href="https://ironman-703-traening.falkenbergdk.chatgpt.site/" target="_blank" rel="noopener noreferrer"><div class="top"><span class="symbol" aria-hidden="true">🚴</span><span class="status">Live</span></div><h3>70.3 Training Planner</h3><p>A practical training hub for the journey to a half Ironman, built around consistency and smarter planning.</p><span class="link">Open project ↗</span></a>
-<div class="project"><div class="top"><span class="symbol" aria-hidden="true">💚</span><span class="status idea">In development</span></div><h3>HRV & Recovery Dashboard</h3><p>Making sense of recovery, recent training sessions and daily readiness in one place.</p><span class="link">Link coming soon</span></div>
+<button class="project preview-card" type="button" data-preview="ironman" aria-label="Preview 70.3 Control Room"><div class="top"><span class="symbol" aria-hidden="true">🚴</span><span class="status">Live</span></div><h3>70.3 Training Planner</h3><p>A practical training hub for the journey to a half Ironman, built around consistency and smarter planning.</p><span class="link">View preview ↗</span></button>
+<button class="project preview-card" type="button" data-preview="hrv" aria-label="Preview Training Compass"><div class="top"><span class="symbol" aria-hidden="true">💚</span><span class="status idea">Private prototype</span></div><h3>Training Compass — HRV & Recovery</h3><p>Making sense of recovery, recent training sessions and daily readiness in one place.</p><span class="link">View preview ↗</span></button>
 <div class="project"><div class="top"><span class="symbol" aria-hidden="true">⚡</span><span class="status idea">Exploring</span></div><h3>AI & Digital Tools</h3><p>Automation, AI experiments and lightweight utilities that solve everyday problems.</p><span class="link">More coming soon</span></div>
 <div class="project"><div class="top"><span class="symbol" aria-hidden="true">🏎️</span><span class="status idea">Exploring</span></div><h3>Garage & Side Projects</h3><p>Car-related ideas, prototypes and other things worth tinkering with.</p><span class="link">More coming soon</span></div>
 </div><p class="note">Projects evolve. Some links will appear as experiments become ready to share.</p>
-</section></main><footer><span>© <span id="year">2026</span> FalkenForge</span><span>Built to keep experimenting.</span></footer>
-</div><script>document.getElementById('year').textContent=new Date().getFullYear()</script></body></html>
+</section></main>
+<dialog id="previewDialog" class="preview-dialog" aria-labelledby="previewTitle"><div class="preview-shell"><div class="preview-header"><div><div class="kicker">PROJECT PREVIEW · PRIVATE PROTOTYPE</div><h2 id="previewTitle"></h2><p id="previewDescription"></p></div><button type="button" class="preview-close" id="previewClose" aria-label="Close preview">✕</button></div><div class="preview-body" id="previewBody"><img id="previewImage" alt="" loading="lazy"><div class="preview-note">Preview image is being prepared. Check back soon.</div></div></div></dialog>
+<footer><span>© <span id="year">2026</span> FalkenForge</span><span>Built to keep experimenting.</span></footer>
+</div><script>document.getElementById('year').textContent=new Date().getFullYear()</script><script>
+const previews={
+ironman:{title:"70.3 Control Room",description:"A structured half-Ironman training planner with weekly sessions, race countdown and progress tracking.",image:"/previews/ironman.webp"},
+hrv:{title:"Training Compass",description:"A private prototype that combines HRV, sleep and training signals into practical daily insights.",image:"/previews/hrv.webp"}
+};
+const dialog=document.getElementById("previewDialog"),image=document.getElementById("previewImage"),body=document.getElementById("previewBody");
+document.querySelectorAll("[data-preview]").forEach(card=>card.addEventListener("click",()=>{
+const p=previews[card.dataset.preview];body.classList.remove("missing");document.getElementById("previewTitle").textContent=p.title;document.getElementById("previewDescription").textContent=p.description;image.alt="Screenshot of "+p.title;image.src=p.image;dialog.showModal();
+}));
+image.addEventListener("error",()=>body.classList.add("missing"));image.addEventListener("load",()=>body.classList.remove("missing"));
+document.getElementById("previewClose").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close()});
+</script></body></html>
